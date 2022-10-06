@@ -52,16 +52,16 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	newAid := utils.GenerateAid()
-	newToken := utils.GenerateToken()
-	hashedPasswordBytes := sha512.Sum512([]byte(body.Password + os.Getenv("SALT")))
-	hashedPassword := hex.EncodeToString(hashedPasswordBytes[:])
-
 	err = db.First(&dbModels.User{}, "email = ?", body.Email).Error
 	if err == nil {
 		c.JSON(409, gin.H{"message": "Email already used", "payload": nil})
 		return
 	}
+
+	newAid := utils.GenerateAid()
+	newToken := utils.GenerateToken()
+	hashedPasswordBytes := sha512.Sum512([]byte(body.Password + os.Getenv("SALT")))
+	hashedPassword := hex.EncodeToString(hashedPasswordBytes[:])
 
 	if len(body.Username) > 32 {
 		c.JSON(400, gin.H{"message": "Username must be 32 chars or less", "payload": nil})
