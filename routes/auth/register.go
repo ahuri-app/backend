@@ -80,5 +80,5 @@ func Register(c *gin.Context) {
 		Token:    newToken,
 	})
 
-	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": newAid, "token": newToken}})
+	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"token": newToken}})
 }
