@@ -1,0 +1,2 @@
+Aid == Ahuri ID (Kinda like IDs in Discord)
+Aid is found in utils and database models
