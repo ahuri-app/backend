@@ -46,6 +46,7 @@ func main() {
 	server.Use(middleware.Cors)
 	server.Use(middleware.CommonHeaders)
 	server.POST("/auth/register", routes_auth.Register)
+	server.POST("/auth/login", routes_auth.Login)
 
 	fmt.Println("Starting server...\nServer started")
 	server.Run("0.0.0.0:" + os.Getenv("PORT"))
