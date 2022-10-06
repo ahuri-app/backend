@@ -15,13 +15,13 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type reqBody struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
 func Register(c *gin.Context) {
+	type reqBody struct {
+		Email    string `json:"email"`
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+
 	db, err := gorm.Open(sqlite.Open(os.Getenv("DB_PATH")), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
