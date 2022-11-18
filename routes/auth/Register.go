@@ -36,24 +36,24 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	trimmedEmail := utils.Trim(reqBody.Email)
-	trimmedUsername := utils.Trim(reqBody.Username)
-	trimmedPassword := utils.Trim(reqBody.Password)
+	filteredEmail := utils.TrimAndLower(reqBody.Email)
+	filteredUsername := utils.Trim(reqBody.Username)
+	filteredPassword := utils.Trim(reqBody.Password)
 
-	if trimmedEmail == "" {
+	if filteredEmail == "" {
 		c.JSON(400, gin.H{"message": "Email not set", "payload": nil})
 		return
 	}
-	if trimmedUsername == "" {
+	if filteredUsername == "" {
 		c.JSON(400, gin.H{"message": "Username not set", "payload": nil})
 		return
 	}
-	if trimmedPassword == "" {
+	if filteredPassword == "" {
 		c.JSON(400, gin.H{"message": "Password not set", "payload": nil})
 		return
 	}
 
-	err = db.First(&dbModels.User{}, "email = ?", trimmedEmail).Error
+	err = db.First(&dbModels.User{}, "email = ?", filteredEmail).Error
 	if err == nil {
 		c.JSON(409, gin.H{"message": "Email already used", "payload": nil})
 		return
@@ -61,26 +61,26 @@ func Register(c *gin.Context) {
 
 	newEid := utils.GenerateEid()
 	newToken := utils.GenerateToken()
-	newTag := generateNonConflictingTag(trimmedUsername)
-	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(trimmedPassword))
+	newTag := generateNonConflictingTag(filteredUsername)
+	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(filteredPassword))
 
-	if len(trimmedUsername) > 32 || len(trimmedUsername) < 3 {
+	if len(filteredUsername) > 32 || len(filteredUsername) < 3 {
 		c.JSON(400, gin.H{"message": "Username must be at least 3 characters and less than 32 characters", "payload": nil})
 		return
 	}
-	if len(trimmedPassword) < 8 || len(trimmedPassword) > 128 {
+	if len(filteredPassword) < 8 || len(filteredPassword) > 128 {
 		c.JSON(400, gin.H{"message": "Password must be at least 8 characters and less than 128 characters", "payload": nil})
 		return
 	}
 
 	db.Create(&dbModels.User{
 		Eid:      newEid,
-		Username: trimmedUsername,
+		Username: filteredUsername,
 		Tag:      newTag,
-		Email:    trimmedEmail,
+		Email:    filteredEmail,
 		Password: hashedPassword,
 		Token:    newToken,
 	})
 
-	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": newEid, "email": trimmedEmail, "username": trimmedUsername, "tag": newTag, "token": newToken}})
+	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": newEid, "email": filteredEmail, "username": filteredUsername, "tag": newTag, "token": newToken}})
 }

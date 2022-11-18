@@ -27,22 +27,22 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	trimmedEmail := utils.Trim(reqBody.Email)
-	trimmedPassword := utils.Trim(reqBody.Password)
+	filteredEmail := utils.TrimAndLower(reqBody.Email)
+	filteredPassword := utils.Trim(reqBody.Password)
 
-	if trimmedEmail == "" {
+	if filteredEmail == "" {
 		c.JSON(400, gin.H{"message": "Email not set", "payload": nil})
 		return
 	}
-	if trimmedPassword == "" {
+	if filteredPassword == "" {
 		c.JSON(400, gin.H{"message": "Password not set", "payload": nil})
 		return
 	}
 
-	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(trimmedPassword))
+	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(filteredPassword))
 
 	accountData := dbModels.User{}
-	result := db.Where("email = ?", trimmedEmail).Where("password = ?", hashedPassword).First(&accountData)
+	result := db.Where("email = ?", filteredEmail).Where("password = ?", hashedPassword).First(&accountData)
 	if result.Error != nil {
 		c.JSON(401, gin.H{"message": "Incorrect credentials", "payload": nil})
 		return
