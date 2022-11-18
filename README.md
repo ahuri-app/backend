@@ -7,3 +7,8 @@ SALT: password salt (do not change between runs or passwords break in database)
 DB_PATH="./prod.db"
 PORT=any port (for example 8080)
 SALT="spam your keyboard for it"
+
+### Development values for env vars
+DB_PATH="./dev.db"
+PORT=8080
+SALT="testing testing 123"
