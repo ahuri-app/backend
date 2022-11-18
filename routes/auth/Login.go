@@ -45,5 +45,5 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"token": accountData.Token}})
+	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": accountData.Eid, "username": accountData.Username, "tag": accountData.Tag, "token": accountData.Token}})
 }

@@ -7,6 +7,7 @@ type User struct {
 	Id       uint `gorm:"primaryKey"`
 	Eid      uint64
 	Username string
+	Tag      string
 	Email    string
 	Password string
 	Token    string

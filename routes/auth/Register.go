@@ -48,6 +48,7 @@ func Register(c *gin.Context) {
 
 	newEid := utils.GenerateEid()
 	newToken := utils.GenerateToken()
+	newTag := utils.GenerateTag()
 	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(reqBody.Password))
 
 	if len(reqBody.Username) > 32 || len(reqBody.Username) < 3 {
@@ -62,10 +63,11 @@ func Register(c *gin.Context) {
 	db.Create(&dbModels.User{
 		Eid:      newEid,
 		Username: reqBody.Username,
+		Tag:      newTag,
 		Email:    reqBody.Email,
 		Password: hashedPassword,
 		Token:    newToken,
 	})
 
-	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"token": newToken}})
+	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": newEid, "username": reqBody.Username, "tag": newTag, "token": newToken}})
 }
