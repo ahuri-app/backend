@@ -36,20 +36,24 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	if reqBody.Email == "" {
+	trimmedEmail := utils.Trim(reqBody.Email)
+	trimmedUsername := utils.Trim(reqBody.Username)
+	trimmedPassword := utils.Trim(reqBody.Password)
+
+	if trimmedEmail == "" {
 		c.JSON(400, gin.H{"message": "Email not set", "payload": nil})
 		return
 	}
-	if reqBody.Username == "" {
+	if trimmedUsername == "" {
 		c.JSON(400, gin.H{"message": "Username not set", "payload": nil})
 		return
 	}
-	if reqBody.Password == "" {
+	if trimmedPassword == "" {
 		c.JSON(400, gin.H{"message": "Password not set", "payload": nil})
 		return
 	}
 
-	err = db.First(&dbModels.User{}, "email = ?", reqBody.Email).Error
+	err = db.First(&dbModels.User{}, "email = ?", trimmedEmail).Error
 	if err == nil {
 		c.JSON(409, gin.H{"message": "Email already used", "payload": nil})
 		return
@@ -57,26 +61,26 @@ func Register(c *gin.Context) {
 
 	newEid := utils.GenerateEid()
 	newToken := utils.GenerateToken()
-	newTag := generateNonConflictingTag(reqBody.Username)
-	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(reqBody.Password))
+	newTag := generateNonConflictingTag(trimmedUsername)
+	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(trimmedPassword))
 
-	if len(reqBody.Username) > 32 || len(reqBody.Username) < 3 {
+	if len(trimmedUsername) > 32 || len(trimmedUsername) < 3 {
 		c.JSON(400, gin.H{"message": "Username must be at least 3 characters and less than 32 characters", "payload": nil})
 		return
 	}
-	if len(reqBody.Password) < 8 || len(reqBody.Password) > 128 {
+	if len(trimmedPassword) < 8 || len(trimmedPassword) > 128 {
 		c.JSON(400, gin.H{"message": "Password must be at least 8 characters and less than 128 characters", "payload": nil})
 		return
 	}
 
 	db.Create(&dbModels.User{
 		Eid:      newEid,
-		Username: reqBody.Username,
+		Username: trimmedUsername,
 		Tag:      newTag,
-		Email:    reqBody.Email,
+		Email:    trimmedEmail,
 		Password: hashedPassword,
 		Token:    newToken,
 	})
 
-	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": newEid, "username": reqBody.Username, "tag": newTag, "token": newToken}})
+	c.JSON(200, gin.H{"message": "Success", "payload": gin.H{"id": newEid, "email": trimmedEmail, "username": trimmedUsername, "tag": newTag, "token": newToken}})
 }
