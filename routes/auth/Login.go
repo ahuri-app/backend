@@ -39,7 +39,7 @@ func Login(c *gin.Context) {
 	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(reqBody.Password))
 
 	accountData := dbModels.User{}
-	result := db.Where(&dbModels.User{}, "email = ?", reqBody.Email).Where(&dbModels.User{}, "password = ?", hashedPassword).Find(&accountData)
+	result := db.Where("email = ?", reqBody.Email).Where("password = ?", hashedPassword).First(&accountData)
 	if result.Error != nil {
 		c.JSON(401, gin.H{"message": "Incorrect credentials", "payload": nil})
 		return
