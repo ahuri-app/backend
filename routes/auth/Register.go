@@ -51,7 +51,7 @@ func Register(c *gin.Context) {
 	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(reqBody.Password))
 
 	if len(reqBody.Username) > 32 || len(reqBody.Username) < 3 {
-		c.JSON(400, gin.H{"message": "Username must be more than 3 characters and less than 32 characters", "payload": nil})
+		c.JSON(400, gin.H{"message": "Username must be at least 3 characters and less than 32 characters", "payload": nil})
 		return
 	}
 	if len(reqBody.Password) < 8 || len(reqBody.Password) > 128 {
