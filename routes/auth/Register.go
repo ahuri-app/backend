@@ -11,6 +11,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func generateNonConflictingTag(username string) string {
+	db, _ := utils.Db()
+	generatedTag := utils.GenerateTag()
+	if db.Where("username = ?", username).Where("tag = ?", generatedTag).First(&dbModels.User{}).Error == nil {
+		return generateNonConflictingTag(username)
+	}
+	return generatedTag
+}
+
 func Register(c *gin.Context) {
 	db, err := utils.Db()
 	if err != nil {
@@ -48,7 +57,7 @@ func Register(c *gin.Context) {
 
 	newEid := utils.GenerateEid()
 	newToken := utils.GenerateToken()
-	newTag := utils.GenerateTag()
+	newTag := generateNonConflictingTag(reqBody.Username)
 	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(reqBody.Password))
 
 	if len(reqBody.Username) > 32 || len(reqBody.Username) < 3 {
