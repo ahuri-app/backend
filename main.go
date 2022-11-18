@@ -44,6 +44,6 @@ func main() {
 	server.POST("/auth/register", routes_auth.Register)
 	server.POST("/auth/login", routes_auth.Login)
 
-	fmt.Println("Starting server...\nServer started")
+	fmt.Println("Starting server...")
 	server.Run("0.0.0.0:" + os.Getenv("PORT"))
 }
