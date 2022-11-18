@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func GenerateAid() uint64 {
+func GenerateEid() uint64 {
 	runes := []rune("0123456789") // hex chars
 	newAid := make([]rune, 16)
 	for i := range newAid {

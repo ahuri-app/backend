@@ -5,13 +5,11 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 
 	"backend/dbModels"
 	"backend/middleware"
 	routes_auth "backend/routes/auth"
+	"backend/utils"
 )
 
 func main() {
@@ -30,9 +28,7 @@ func main() {
 	}
 
 	fmt.Println("Configuring DB and GORM...")
-	db, err := gorm.Open(sqlite.Open(os.Getenv("DB_PATH")), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
+	db, err := utils.Db()
 	if err != nil {
 		fmt.Println("Error!", err)
 		return

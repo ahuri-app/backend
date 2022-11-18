@@ -2,81 +2,68 @@ package routes_auth
 
 import (
 	"backend/dbModels"
+	reqBodyModels_auth "backend/reqBodyModels/auth"
 	"backend/utils"
+	utils_crypto "backend/utils/crypto"
 
-	"crypto/sha512"
-	"encoding/hex"
 	"fmt"
-	"os"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 func Register(c *gin.Context) {
-	type reqBody struct {
-		Email    string `json:"email"`
-		Username string `json:"username"`
-		Password string `json:"password"`
-	}
-
-	db, err := gorm.Open(sqlite.Open(os.Getenv("DB_PATH")), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Silent),
-	})
+	db, err := utils.Db()
 	if err != nil {
 		fmt.Println("DB open error! (/auth/register)\nDetails:", err)
 		c.JSON(500, gin.H{"message": "Internal server error", "payload": nil})
 		return
 	}
 
-	body := reqBody{}
-	err = c.BindJSON(&body)
+	reqBody := reqBodyModels_auth.Register{}
+	err = c.BindJSON(&reqBody)
 	if err != nil {
 		fmt.Println("BindJSON error! (/auth/register)\nDetails:", err)
 		c.JSON(500, gin.H{"message": "Internal server error", "payload": nil})
 		return
 	}
 
-	if body.Email == "" {
+	if reqBody.Email == "" {
 		c.JSON(400, gin.H{"message": "Email not set", "payload": nil})
 		return
 	}
-	if body.Username == "" {
+	if reqBody.Username == "" {
 		c.JSON(400, gin.H{"message": "Username not set", "payload": nil})
 		return
 	}
-	if body.Password == "" {
+	if reqBody.Password == "" {
 		c.JSON(400, gin.H{"message": "Password not set", "payload": nil})
 		return
 	}
 
-	err = db.First(&dbModels.User{}, "email = ?", body.Email).Error
+	err = db.First(&dbModels.User{}, "email = ?", reqBody.Email).Error
 	if err == nil {
 		c.JSON(409, gin.H{"message": "Email already used", "payload": nil})
 		return
 	}
 
-	newAid := utils.GenerateAid()
+	newEid := utils.GenerateEid()
 	newToken := utils.GenerateToken()
-	hashedPasswordBytes := sha512.Sum512([]byte(body.Password + os.Getenv("SALT")))
-	hashedPassword := hex.EncodeToString(hashedPasswordBytes[:])
+	hashedPassword := utils_crypto.Hash(utils_crypto.Salt(reqBody.Password))
 
-	if len(body.Username) > 32 {
+	if len(reqBody.Username) > 32 {
 		c.JSON(400, gin.H{"message": "Username must be 32 chars or less", "payload": nil})
 		return
 	}
-	if len(body.Password) < 8 || len(body.Password) > 128 {
+	if len(reqBody.Password) < 8 || len(reqBody.Password) > 128 {
 		c.JSON(400, gin.H{"message": "Password must be at least 8 chars and 128 chars max", "payload": nil})
 		return
 	}
 
 	db.Create(&dbModels.User{
-		Username: body.Username,
-		Email:    body.Email,
+		Eid:      newEid,
+		Username: reqBody.Username,
+		Email:    reqBody.Email,
 		Password: hashedPassword,
-		Aid:      newAid,
 		Token:    newToken,
 	})
 

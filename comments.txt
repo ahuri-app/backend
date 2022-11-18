@@ -1,2 +1,1 @@
-Aid == Ahuri ID (Kinda like IDs in Discord)
-Aid is found in utils and database models
+Eid == External ID (It's the ID that's actually shown to the user and not used internally by GORM)
