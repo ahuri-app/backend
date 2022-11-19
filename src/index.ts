@@ -1,4 +1,3 @@
-import express from 'express';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -15,7 +14,14 @@ if (!process.env.SALT) {
   process.exit(1);
 }
 
+import express from 'express';
+
+import router from './router';
+
 const server = express();
+
+server.use(express.json());
+server.use(router);
 
 server.listen(Number(process.env.PORT), () =>
   console.log(`Server started at 0.0.0.0:${process.env.PORT}`),
