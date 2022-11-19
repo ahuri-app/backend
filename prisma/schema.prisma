@@ -6,3 +6,12 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_FILE_PATH")
 }
+
+model User {
+  id       String @id @default(cuid())
+  eid      String
+  email    String @unique
+  username String
+  tag      String @unique
+  password String
+}
