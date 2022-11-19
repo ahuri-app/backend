@@ -36,11 +36,12 @@ func main() {
 	db.AutoMigrate(&dbModels.User{})
 	db.AutoMigrate(&dbModels.Channel{})
 
-	fmt.Println("Configuring gin server...")
+	fmt.Println("Configuring Gin server...")
 	gin.SetMode(gin.ReleaseMode)
 	server := gin.New()
 	server.Use(middleware.Cors)
 	server.Use(middleware.CommonHeaders)
+	server.Use(middleware.Ratelimiter)
 	server.POST("/auth/register", routes_auth.Register)
 	server.POST("/auth/login", routes_auth.Login)
 
