@@ -12,7 +12,7 @@ func keyFunc(c *gin.Context) string {
 }
 
 func errorHandler(c *gin.Context, info ratelimit.Info) {
-	c.String(429, "Too many requests. Try again in "+time.Until(info.ResetTime).String())
+	c.String(429, "Too many requests. Try again in "+time.Until(info.ResetTime).Round(time.Second).String())
 }
 
 func Ratelimiter(rate time.Duration, limit uint) gin.HandlerFunc {
