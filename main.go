@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -41,9 +42,8 @@ func main() {
 	server := gin.New()
 	server.Use(middleware.Cors)
 	server.Use(middleware.CommonHeaders)
-	server.Use(middleware.Ratelimiter)
-	server.POST("/auth/register", routes_auth.Register)
-	server.POST("/auth/login", routes_auth.Login)
+	server.POST("/auth/register", middleware.Ratelimiter(time.Minute, 20), routes_auth.Register)
+	server.POST("/auth/login", middleware.Ratelimiter(time.Minute, 30), routes_auth.Login)
 
 	fmt.Println("Starting server...")
 	server.Run("0.0.0.0:" + os.Getenv("PORT"))
