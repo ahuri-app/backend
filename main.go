@@ -17,22 +17,22 @@ func main() {
 	fmt.Println("Checking environment variables...")
 	if os.Getenv("DB_PATH") == "" {
 		fmt.Println("DB_PATH is not set!")
-		return
+		os.Exit(1)
 	}
 	if os.Getenv("PORT") == "" {
 		fmt.Println("PORT is not set!")
-		return
+		os.Exit(1)
 	}
 	if os.Getenv("SALT") == "" {
 		fmt.Println("SALT is not set!")
-		return
+		os.Exit(1)
 	}
 
 	fmt.Println("Configuring DB and GORM...")
 	db, err := utils.Db()
 	if err != nil {
 		fmt.Println("Error!", err)
-		return
+		os.Exit(1)
 	}
 	db.AutoMigrate(&dbModels.User{})
 	db.AutoMigrate(&dbModels.Channel{})
