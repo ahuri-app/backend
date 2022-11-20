@@ -16,6 +16,7 @@ model User {
   password String
   token    String
   messages Message[]
+  channels Channel[]
 
   @@unique([id, eid])
 }
@@ -25,6 +26,9 @@ model Channel {
   eid      String    @unique
   name     String
   messages Message[]
+  owner    User      @relation(fields: [ownerId, ownerEid], references: [id, eid])
+  ownerId  String
+  ownerEid String
 
   @@unique([id, eid])
 }
