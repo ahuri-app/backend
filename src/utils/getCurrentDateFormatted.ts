@@ -1,9 +1,9 @@
 export default () => {
   const createdAt = new Date();
   return `${
-    String(createdAt.getDay()).length === 1
-      ? `0${createdAt.getDay()}`
-      : createdAt.getDay()
+    String(createdAt.getDate()).length === 1
+      ? `0${createdAt.getDate()}`
+      : createdAt.getDate()
   }-${
     String(createdAt.getMonth()).length === 1
       ? `0${createdAt.getMonth()}`
