@@ -8,11 +8,35 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(cuid())
-  eid      String
-  email    String @unique
+  id       String    @id @default(cuid())
+  eid      String    @unique
+  email    String    @unique
   username String
-  tag      String @unique
+  tag      String    @unique
   password String
   token    String
+  messages Message[]
+
+  @@unique([id, eid])
+}
+
+model Channel {
+  id       String    @id @default(cuid())
+  eid      String    @unique
+  name     String
+  messages Message[]
+
+  @@unique([id, eid])
+}
+
+model Message {
+  id                   String  @id @default(cuid())
+  eid                  String  @unique
+  content              String
+  User                 User    @relation(fields: [senderId, senderEid], references: [id, eid])
+  senderId             String
+  senderEid            String
+  channelSentInto      Channel @relation(fields: [idOfChannelSentInto, eidOfChannelSentInto], references: [id, eid])
+  idOfChannelSentInto  String
+  eidOfChannelSentInto String
 }
