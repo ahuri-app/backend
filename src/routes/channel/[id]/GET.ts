@@ -33,7 +33,8 @@ export default async (req: Request, res: Response) => {
       },
       select: {
         id: true,
-        ownerId: true,
+        name: true,
+        owner: true,
         messages: true,
       },
     });
