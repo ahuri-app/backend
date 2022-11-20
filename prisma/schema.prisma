@@ -27,10 +27,10 @@ model Channel {
 }
 
 model Message {
-  id                   String  @id @default(cuid())
-  content              String
-  sender               User    @relation(fields: [senderId], references: [id])
-  senderId             String
-  channelSentInto      Channel @relation(fields: [idOfChannelSentInto], references: [id])
-  idOfChannelSentInto  String
+  id        String  @id @default(cuid())
+  content   String
+  sender    User    @relation(fields: [senderId], references: [id])
+  senderId  String
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId String
 }
