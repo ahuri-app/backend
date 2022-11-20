@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../../utils/db';
+import getCurrentDateFormatted from '../../utils/getCurrentDateFormatted';
 
 export default async (req: Request, res: Response) => {
   try {
@@ -46,10 +47,13 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
+    const createdAt = getCurrentDateFormatted();
+
     const channel = await db.channel.create({
       data: {
         name: trimmedChannelName,
         ownerId: user.id,
+        createdAt,
       },
     });
 
@@ -58,6 +62,7 @@ export default async (req: Request, res: Response) => {
       payload: {
         id: channel.id,
         name: channel.name,
+        createdAt,
         messages: [],
       },
     });

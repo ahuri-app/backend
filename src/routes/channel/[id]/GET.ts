@@ -39,9 +39,11 @@ export default async (req: Request, res: Response) => {
             id: true,
             username: true,
             tag: true,
+            createdAt: true,
           },
         },
         messages: true,
+        createdAt: true,
       },
     });
 

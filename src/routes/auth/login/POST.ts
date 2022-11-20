@@ -47,6 +47,7 @@ export default async (req: Request, res: Response) => {
         username: user.username,
         tag: user.tag,
         token: user.token,
+        createdAt: user.createdAt,
       },
     });
   } catch {

@@ -3,6 +3,7 @@ import { hash, salt } from '../../../utils/crypto';
 import db from '../../../utils/db';
 import generateNonConflictingTag from '../../../utils/generateNonConflictingTag';
 import generateToken from '../../../utils/generateToken';
+import getCurrentDateFormatted from '../../../utils/getCurrentDateFormatted';
 
 export default async (req: Request, res: Response) => {
   try {
@@ -77,6 +78,7 @@ export default async (req: Request, res: Response) => {
         tag,
         password: hash(salt(trimmedPassword)),
         token,
+        createdAt: getCurrentDateFormatted(),
       },
     });
 
@@ -88,6 +90,7 @@ export default async (req: Request, res: Response) => {
         username: user.username,
         tag: user.tag,
         token: user.token,
+        createdAt: user.createdAt,
       },
     });
   } catch {
