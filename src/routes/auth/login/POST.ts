@@ -40,7 +40,7 @@ export default async (req: Request, res: Response) => {
     res.status(200).json({
       message: 'Success',
       payload: {
-        id: user.eid,
+        id: user.id,
         email: user.email,
         username: user.username,
         tag: user.tag,

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { hash, salt } from '../../../utils/crypto';
 import db from '../../../utils/db';
-import generateEid from '../../../utils/generateEid';
 import generateNonConflictingTag from '../../../utils/generateNonConflictingTag';
 import generateToken from '../../../utils/generateToken';
 
@@ -66,13 +65,11 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
-    const eid = generateEid();
     const tag = await generateNonConflictingTag(trimmedUsername);
     const token = generateToken(64);
 
-    await db.user.create({
+    const user = await db.user.create({
       data: {
-        eid,
         email: trimmedAndLoweredEmail,
         username: trimmedUsername,
         tag,
@@ -84,11 +81,11 @@ export default async (req: Request, res: Response) => {
     res.status(201).json({
       message: 'Created account',
       payload: {
-        id: eid,
-        email: trimmedAndLoweredEmail,
-        username: trimmedUsername,
-        tag,
-        token,
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        tag: user.tag,
+        token: user.token,
       },
     });
   } catch {

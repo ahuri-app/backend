@@ -9,16 +9,13 @@ datasource db {
 
 model User {
   id       String    @id @default(cuid())
-  eid      String    @unique
   email    String    @unique
   username String
   tag      String    @unique
   password String
-  token    String
+  token    String    @unique
   messages Message[]
   channels Channel[]
-
-  @@unique([id, eid])
 }
 
 model Channel {
@@ -26,21 +23,17 @@ model Channel {
   eid      String    @unique
   name     String
   messages Message[]
-  owner    User      @relation(fields: [ownerId, ownerEid], references: [id, eid])
+  owner    User      @relation(fields: [ownerId], references: [id])
   ownerId  String
-  ownerEid String
-
-  @@unique([id, eid])
 }
 
 model Message {
   id                   String  @id @default(cuid())
   eid                  String  @unique
   content              String
-  User                 User    @relation(fields: [senderId, senderEid], references: [id, eid])
+  User                 User    @relation(fields: [senderId], references: [id])
   senderId             String
   senderEid            String
-  channelSentInto      Channel @relation(fields: [idOfChannelSentInto, eidOfChannelSentInto], references: [id, eid])
+  channelSentInto      Channel @relation(fields: [idOfChannelSentInto], references: [id])
   idOfChannelSentInto  String
-  eidOfChannelSentInto String
 }
