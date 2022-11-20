@@ -7,11 +7,11 @@ import generateToken from '../../../utils/generateToken';
 
 export default async (req: Request, res: Response) => {
   try {
-    const trimmedEmail = String(req.body.email || '').trim();
+    const trimmedAndLoweredEmail = String(req.body.email || '').trim().toLowerCase();
     const trimmedUsername = String(req.body.username || '').trim();
     const trimmedPassword = String(req.body.password || '').trim();
 
-    if (!trimmedEmail) {
+    if (!trimmedAndLoweredEmail) {
       res.status(400).json({
         message: 'Email not set',
         payload: null,
@@ -73,7 +73,7 @@ export default async (req: Request, res: Response) => {
     await db.user.create({
       data: {
         eid,
-        email: trimmedEmail,
+        email: trimmedAndLoweredEmail,
         username: trimmedUsername,
         tag,
         password: hash(salt(trimmedPassword)),
@@ -85,7 +85,7 @@ export default async (req: Request, res: Response) => {
       message: 'Created account',
       payload: {
         id: eid,
-        email: trimmedEmail,
+        email: trimmedAndLoweredEmail,
         username: trimmedUsername,
         tag,
         token,

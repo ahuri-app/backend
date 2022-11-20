@@ -4,10 +4,10 @@ import db from '../../../utils/db';
 
 export default async (req: Request, res: Response) => {
   try {
-    const trimmedEmail = String(req.body.email || '').trim();
+    const trimmedAndLoweredEmail = String(req.body.email || '').trim().toLowerCase();
     const trimmedPassword = String(req.body.password || '').trim();
 
-    if (!trimmedEmail) {
+    if (!trimmedAndLoweredEmail) {
       res.status(400).json({
         message: 'Email not set',
         payload: null,
@@ -24,7 +24,7 @@ export default async (req: Request, res: Response) => {
 
     const user = await db.user.findFirst({
       where: {
-        email: trimmedEmail,
+        email: trimmedAndLoweredEmail,
         password: hash(salt(trimmedPassword)),
       },
     });
