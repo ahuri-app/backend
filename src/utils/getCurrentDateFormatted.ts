@@ -5,9 +5,9 @@ export default () => {
       ? `0${createdAt.getDate()}`
       : createdAt.getDate()
   }-${
-    String(createdAt.getMonth()).length === 1
-      ? `0${createdAt.getMonth()}`
-      : createdAt.getMonth()
+    String(createdAt.getMonth() + 1).length === 1
+      ? `0${createdAt.getMonth() + 1}`
+      : createdAt.getMonth() + 1
   }-${
     String(createdAt.getFullYear()).length === 1
       ? `0${createdAt.getFullYear()}`
