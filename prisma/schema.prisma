@@ -16,6 +16,7 @@ model User {
   token    String    @unique
   messages Message[]
   channels Channel[]
+  badges   String    @default("[]")
 }
 
 model Channel {
