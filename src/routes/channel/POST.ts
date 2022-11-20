@@ -58,6 +58,7 @@ export default async (req: Request, res: Response) => {
       payload: {
         id: channel.id,
         name: channel.name,
+        messages: [],
       },
     });
   } catch (e) {
