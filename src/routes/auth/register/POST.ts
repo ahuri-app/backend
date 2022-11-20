@@ -57,7 +57,7 @@ export default async (req: Request, res: Response) => {
             username: trimmedUsername,
           },
         })
-      ).length > 456975
+      ).length > 456969
     ) {
       res.status(400).json({
         message: 'Too many people are using the same username',
