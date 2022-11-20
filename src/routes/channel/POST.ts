@@ -39,7 +39,8 @@ export default async (req: Request, res: Response) => {
 
     if (trimmedChannelName.length > 64) {
       res.status(400).json({
-        message: 'Channel name must have at least 1 character and have less than or equal to 64 characters',
+        message:
+          'Channel name must have at least 1 character and have less than or equal to 64 characters',
         payload: null,
       });
       return;
