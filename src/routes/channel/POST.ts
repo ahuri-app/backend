@@ -37,6 +37,14 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
+    if (trimmedChannelName.length > 64) {
+      res.status(400).json({
+        message: 'Channel name must have at least 1 character and have less than or equal to 64 characters',
+        payload: null,
+      });
+      return;
+    }
+
     const channel = await db.channel.create({
       data: {
         name: trimmedChannelName,
