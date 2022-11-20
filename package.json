@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "npx nodemon src/index.ts --ignore 'dev.db'",
+    "dev": "npx nodemon src/index.ts",
     "prod": "node build/index.js",
     "db:push": "prisma db push",
     "db:pull": "prisma db pull",
