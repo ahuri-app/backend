@@ -20,7 +20,6 @@ model User {
 
 model Channel {
   id       String    @id @default(cuid())
-  eid      String    @unique
   name     String
   messages Message[]
   owner    User      @relation(fields: [ownerId], references: [id])
@@ -29,11 +28,9 @@ model Channel {
 
 model Message {
   id                   String  @id @default(cuid())
-  eid                  String  @unique
   content              String
-  User                 User    @relation(fields: [senderId], references: [id])
+  sender               User    @relation(fields: [senderId], references: [id])
   senderId             String
-  senderEid            String
   channelSentInto      Channel @relation(fields: [idOfChannelSentInto], references: [id])
   idOfChannelSentInto  String
 }

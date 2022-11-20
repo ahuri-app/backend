@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import db from '../../utils/db';
+import db from '../../../utils/db';
 
 export default async (req: Request, res: Response) => {
   try {
@@ -27,29 +27,28 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
-    const trimmedChannelName = String(req.body.channelName || '').trim();
+    const channel = await db.channel.findFirst({
+      where: {
+        id: req.params.id,
+      },
+      select: {
+        id: true,
+        ownerId: true,
+        messages: true,
+      },
+    });
 
-    if (!trimmedChannelName) {
-      res.status(400).json({
-        message: 'Channel name is not set',
+    if (!channel) {
+      res.status(404).json({
+        message: 'Channel not found',
         payload: null,
       });
       return;
     }
 
-    const channel = await db.channel.create({
-      data: {
-        name: trimmedChannelName,
-        ownerId: user.id,
-      },
-    });
-
-    res.status(201).json({
-      message: 'Created channel',
-      payload: {
-        id: channel.id,
-        name: channel.name,
-      },
+    res.json({
+      message: 'Success',
+      payload: channel,
     });
   } catch (e) {
     console.log(e);
