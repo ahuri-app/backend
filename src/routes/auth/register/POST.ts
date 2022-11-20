@@ -6,7 +6,9 @@ import generateToken from '../../../utils/generateToken';
 
 export default async (req: Request, res: Response) => {
   try {
-    const trimmedAndLoweredEmail = String(req.body.email || '').trim().toLowerCase();
+    const trimmedAndLoweredEmail = String(req.body.email || '')
+      .trim()
+      .toLowerCase();
     const trimmedUsername = String(req.body.username || '').trim();
     const trimmedPassword = String(req.body.password || '').trim();
 

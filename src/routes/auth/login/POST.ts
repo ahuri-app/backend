@@ -4,7 +4,9 @@ import db from '../../../utils/db';
 
 export default async (req: Request, res: Response) => {
   try {
-    const trimmedAndLoweredEmail = String(req.body.email || '').trim().toLowerCase();
+    const trimmedAndLoweredEmail = String(req.body.email || '')
+      .trim()
+      .toLowerCase();
     const trimmedPassword = String(req.body.password || '').trim();
 
     if (!trimmedAndLoweredEmail) {
