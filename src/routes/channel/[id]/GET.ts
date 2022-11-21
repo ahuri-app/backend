@@ -39,10 +39,25 @@ export default async (req: Request, res: Response) => {
             id: true,
             username: true,
             tag: true,
+            badges: true,
             createdAt: true,
           },
         },
-        messages: true,
+        messages: {
+          select: {
+            sender: {
+              select: {
+                id: true,
+                username: true,
+                tag: true,
+                badges: true,
+                createdAt: true,
+              },
+            },
+            content: true,
+            sentAt: true,
+          },
+        },
         createdAt: true,
       },
     });
