@@ -68,6 +68,14 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
+    if (await db.user.findFirst({ where: { email: trimmedAndLoweredEmail } })) {
+      res.status(409).json({
+        message: 'Email already used',
+        payload: null,
+      });
+      return;
+    }
+
     const tag = await generateNonConflictingTag(trimmedUsername);
     const token = generateToken(64);
 
