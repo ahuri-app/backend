@@ -17,6 +17,14 @@ export default async (req: Request, res: Response) => {
       where: {
         token: trimmedToken,
       },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        tag: true,
+        badges: true,
+        createdAt: true,
+      },
     });
 
     if (!user) {
