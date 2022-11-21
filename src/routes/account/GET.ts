@@ -24,6 +24,7 @@ export default async (req: Request, res: Response) => {
         tag: true,
         badges: true,
         createdAt: true,
+        token: true,
       },
     });
 
