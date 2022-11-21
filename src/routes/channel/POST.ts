@@ -74,8 +74,7 @@ export default async (req: Request, res: Response) => {
         owner: user,
       },
     });
-  } catch (e) {
-    console.log(e);
+  } catch {
     res.status(500).json({
       message: 'Internal server error',
       payload: null,

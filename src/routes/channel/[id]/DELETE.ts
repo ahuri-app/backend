@@ -64,8 +64,7 @@ export default async (req: Request, res: Response) => {
       message: 'You do not own this channel',
       payload: null,
     });
-  } catch (e) {
-    console.log(e);
+  } catch {
     res.status(500).json({
       message: 'Internal server error',
       payload: null,
