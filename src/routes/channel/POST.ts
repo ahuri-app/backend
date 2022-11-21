@@ -4,8 +4,7 @@ import getCurrentDateFormatted from '../../utils/getCurrentDateFormatted';
 
 export default async (req: Request, res: Response) => {
   try {
-    const trimmedToken = String(req.headers.authorization || '').trim();
-    if (!trimmedToken) {
+    if (!req.headers.authorization) {
       res.status(400).json({
         message:
           'There is no Authorization header, please set it to a valid token',
@@ -16,7 +15,7 @@ export default async (req: Request, res: Response) => {
 
     const user = await db.user.findFirst({
       where: {
-        token: trimmedToken,
+        token: req.headers.authorization,
       },
       select: {
         id: true,
