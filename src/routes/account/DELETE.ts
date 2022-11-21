@@ -20,6 +20,12 @@ export default async (req: Request, res: Response) => {
       select: {
         messages: true,
         channels: true,
+        id: true,
+        username: true,
+        tag: true,
+        badges: true,
+        createdAt: true,
+        email: true,
       },
     });
 
@@ -52,8 +58,15 @@ export default async (req: Request, res: Response) => {
     });
 
     res.json({
-      message: 'Success',
-      payload: null,
+      message: 'Deleted account',
+      payload: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        tag: user.tag,
+        badges: user.badges,
+        createdAt: user.createdAt,
+      },
     });
   } catch {
     res.status(500).json({
