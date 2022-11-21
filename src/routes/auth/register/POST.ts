@@ -89,6 +89,7 @@ export default async (req: Request, res: Response) => {
         email: user.email,
         username: user.username,
         tag: user.tag,
+        badges: JSON.parse(user.badges),
         token: user.token,
         createdAt: user.createdAt,
       },
