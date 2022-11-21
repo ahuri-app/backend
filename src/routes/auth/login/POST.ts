@@ -29,6 +29,15 @@ export default async (req: Request, res: Response) => {
         email: trimmedAndLoweredEmail,
         password: hash(salt(trimmedPassword)),
       },
+      select: {
+        id: true,
+        username: true,
+        tag: true,
+        badges: true,
+        createdAt: true,
+        email: true,
+        token: true,
+      },
     });
 
     if (!user) {
@@ -41,15 +50,7 @@ export default async (req: Request, res: Response) => {
 
     res.status(200).json({
       message: 'Success',
-      payload: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        tag: user.tag,
-        badges: JSON.parse(user.badges),
-        token: user.token,
-        createdAt: user.createdAt,
-      },
+      payload: user,
     });
   } catch {
     res.status(500).json({

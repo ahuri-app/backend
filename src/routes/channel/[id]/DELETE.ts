@@ -19,6 +19,11 @@ export default async (req: Request, res: Response) => {
       },
       select: {
         channels: true,
+        id: true,
+        username: true,
+        tag: true,
+        badges: true,
+        createdAt: true,
       },
     });
 
@@ -38,8 +43,19 @@ export default async (req: Request, res: Response) => {
           },
         });
         res.json({
-          message: 'Success',
-          payload: null,
+          message: 'Deleted channel',
+          payload: {
+            id: user.channels[i].id,
+            name: user.channels[i].name,
+            owner: {
+              id: user.id,
+              username: user.username,
+              tag: user.tag,
+              badges: user.badges,
+              createdAt: user.createdAt,
+            },
+            createdAt: user.channels[i].createdAt,
+          },
         });
         return;
       }

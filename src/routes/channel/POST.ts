@@ -18,6 +18,13 @@ export default async (req: Request, res: Response) => {
       where: {
         token: trimmedToken,
       },
+      select: {
+        id: true,
+        username: true,
+        tag: true,
+        badges: true,
+        createdAt: true,
+      },
     });
 
     if (!user) {
@@ -64,6 +71,7 @@ export default async (req: Request, res: Response) => {
         name: channel.name,
         createdAt,
         messages: [],
+        owner: user,
       },
     });
   } catch (e) {

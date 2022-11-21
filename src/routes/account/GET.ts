@@ -37,14 +37,7 @@ export default async (req: Request, res: Response) => {
 
     res.json({
       message: 'Success',
-      payload: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        tag: user.tag,
-        badges: JSON.parse(user.badges),
-        createdAt: user.createdAt,
-      },
+      payload: user,
     });
   } catch (e) {
     console.log(e);

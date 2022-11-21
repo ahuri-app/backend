@@ -84,15 +84,7 @@ export default async (req: Request, res: Response) => {
 
     res.status(201).json({
       message: 'Created account',
-      payload: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        tag: user.tag,
-        badges: JSON.parse(user.badges),
-        token: user.token,
-        createdAt: user.createdAt,
-      },
+      payload: user,
     });
   } catch {
     res.status(500).json({
