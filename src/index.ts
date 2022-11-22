@@ -18,6 +18,7 @@ import express from 'express';
 
 import cors from './middleware/cors';
 import router from './router';
+import createWsRoute from './utils/createWsRoute';
 
 const server = express();
 
@@ -25,6 +26,8 @@ server.use(cors);
 server.use(express.json());
 server.use(router);
 
-server.listen(Number(process.env.PORT), () =>
-  console.log(`Server started at 0.0.0.0:${process.env.PORT}`),
+createWsRoute(
+  server.listen(Number(process.env.PORT), () =>
+    console.log(`Server started at 0.0.0.0:${process.env.PORT}`),
+  ),
 );
