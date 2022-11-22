@@ -36,6 +36,24 @@ export default async (req: Request, res: Response) => {
 
     for (let i = 0; i < user.channels.length; i++)
       if (user.channels[i].id === req.params.id) {
+        const channel: any = await db.channel.findFirst({
+          where: {
+            id: user.channels[i].id,
+          },
+          select: {
+            messages: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        });
+        for (let j = 0; j < channel.messages.length; j++)
+          await db.message.delete({
+            where: {
+              id: channel.messages[j].id,
+            },
+          });
         await db.channel.delete({
           where: {
             id: req.params.id,
