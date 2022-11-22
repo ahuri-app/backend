@@ -51,9 +51,9 @@ export default async (req: Request, res: Response) => {
       return;
     }
 
-    if (trimmedMessage.length > 2000) {
+    if (trimmedMessage.length > 2500) {
       res.status(400).json({
-        message: 'Message content is over the 2000 characters limit',
+        message: 'Message content is over the 2500 characters limit',
         payload: null,
       });
       return;
