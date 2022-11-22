@@ -36,5 +36,5 @@ model Message {
   senderId  String
   channel   Channel @relation(fields: [channelId], references: [id])
   channelId String
-  sentAt    String
+  createdAt String
 }

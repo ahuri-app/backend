@@ -64,7 +64,7 @@ export default async (req: Request, res: Response) => {
         content: trimmedMessage,
         senderId: user.id,
         channelId: channel.id,
-        sentAt: getCurrentDateFormatted(),
+        createdAt: getCurrentDateFormatted(),
       },
       select: {
         id: true,
@@ -94,7 +94,7 @@ export default async (req: Request, res: Response) => {
           },
         },
         content: true,
-        sentAt: true,
+        createdAt: true,
       },
     });
 

@@ -54,7 +54,7 @@ export default async (req: Request, res: Response) => {
               },
             },
             content: true,
-            sentAt: true,
+            createdAt: true,
           },
         },
         createdAt: true,
