@@ -126,7 +126,7 @@ export default (ws: WebSocket) => {
               },
             },
             content: true,
-            sentAt: true,
+            createdAt: true,
           },
           take: -1,
         });
@@ -150,7 +150,7 @@ export default (ws: WebSocket) => {
                     },
                   },
                   content: true,
-                  sentAt: true,
+                  createdAt: true,
                 },
                 take: -1,
               })
@@ -172,7 +172,7 @@ export default (ws: WebSocket) => {
                 },
               },
               content: true,
-              sentAt: true,
+              createdAt: true,
             },
             take: -1,
           });
@@ -205,7 +205,7 @@ export default (ws: WebSocket) => {
                   },
                 },
                 content: true,
-                sentAt: true,
+                createdAt: true,
               },
               take: -1,
             });
