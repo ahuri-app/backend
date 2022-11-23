@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import db from '../../../utils/db';
+import db from '../../../../utils/db';
 
 export default async (req: Request, res: Response) => {
   try {
@@ -31,18 +31,21 @@ export default async (req: Request, res: Response) => {
         id: req.params.id,
       },
       select: {
-        id: true,
-        name: true,
-        owner: {
+        messages: {
           select: {
-            id: true,
-            username: true,
-            tag: true,
-            badges: true,
+            sender: {
+              select: {
+                id: true,
+                username: true,
+                tag: true,
+                badges: true,
+                createdAt: true,
+              },
+            },
+            content: true,
             createdAt: true,
           },
         },
-        createdAt: true,
       },
     });
 
