@@ -212,7 +212,7 @@ export default (ws: WebSocket) => {
             ws.send(
               JSON.stringify({
                 message: 'New message',
-                payload: lastMessageInChannel,
+                payload: lastMessageInChannel[0],
               }),
             );
           }
@@ -220,7 +220,7 @@ export default (ws: WebSocket) => {
     } catch {
       ws.send(
         JSON.stringify({
-          message: 'Invalid command body',
+          message: 'Internal server error',
           payload: null,
         }),
       );
